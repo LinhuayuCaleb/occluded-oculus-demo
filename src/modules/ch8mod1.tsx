@@ -106,8 +106,9 @@ export const Ch8Mod1: React.FC<WidgetProps> = () => {
           <li>工具：{current.tool}</li>
         </ul>
       </div>
-      <div className="feedback">
-        论文把这套结构称为纵深防御式的冗余：任何一层被平台清洗掉，下一层仍然有效。
+      <div className={'feedback' + (current.id === 'in' ? ' good' : '')}>
+        第 {index} 层「{current.name}」：{current.why}
+        论文把这套结构称为纵深防御式的冗余——任何一层被平台清洗掉，下一层仍然有效。
       </div>
     </div>
   );

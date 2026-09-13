@@ -3,3 +3,6 @@ dist
 dist-ssr
 *.local
 .DS_Store
+
+# 本地汇报讲稿：只留在这台机器上，不随仓库发布
+PRESENTATION_SCRIPT.md

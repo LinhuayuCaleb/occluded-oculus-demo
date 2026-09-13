@@ -14,12 +14,31 @@ const AUTHORS = [
 
 const METRICS = ['delta', 'argamon', 'eder', 'simple', 'canberra', 'manhattan', 'euclidean', 'cosine', 'wurzburg', 'minmax'];
 
+const HOME = { bx: 780, by: 150 };
+
+/** Nearest author sample to a point. Shared by the initial state, the reset
+ *  button and drag updates so the HTML label always agrees with the canvas. */
+function nearestTo(bx: number, by: number): { name: string; d: number } {
+  let best = AUTHORS[0];
+  let bestD = Infinity;
+  for (const a of AUTHORS) {
+    const dd = dist(a.x, a.y, bx, by);
+    if (dd < bestD) {
+      bestD = dd;
+      best = a;
+    }
+  }
+  return { name: best.name, d: bestD };
+}
+
+const HOME_NEAREST = nearestTo(HOME.bx, HOME.by);
+
 export const Ch4Mod1: React.FC<WidgetProps> = () => {
   const ref = useRef<HTMLCanvasElement>(null);
-  const st = useRef({ bx: 780, by: 150, dragging: false });
+  const st = useRef({ bx: HOME.bx, by: HOME.by, dragging: false });
   const raf = useRef<number | null>(null);
-  const [nearest, setNearest] = useState('Hughes');
-  const [d, setD] = useState(0);
+  const [nearest, setNearest] = useState(HOME_NEAREST.name);
+  const [d, setD] = useState(HOME_NEAREST.d);
   const [fb, setFb] = useState({ text: '拖动橙色样本点，观察它与三位作者样本的距离。', cls: '' });
 
   useEffect(() => {
@@ -79,17 +98,12 @@ export const Ch4Mod1: React.FC<WidgetProps> = () => {
   const update = (bx: number, by: number) => {
     st.current.bx = clamp(bx, 130, W - 60);
     st.current.by = clamp(by, 40, 230);
-    let best = AUTHORS[0];
-    let bestD = Infinity;
-    for (const a of AUTHORS) {
-      const dd = dist(a.x, a.y, st.current.bx, st.current.by);
-      if (dd < bestD) { bestD = dd; best = a; }
-    }
-    setNearest(best.name);
+    const { name, d: bestD } = nearestTo(st.current.bx, st.current.by);
+    setNearest(name);
     setD(bestD);
     setFb(
       bestD < 120
-        ? { text: '样本落进最近邻范围，会被直接归为 ' + best.name + '。', cls: 'bad' }
+        ? { text: '样本落进最近邻范围，会被直接归为 ' + name + '。', cls: 'bad' }
         : bestD < 240
         ? { text: '样本位于边界附近，归属开始变得不确定。', cls: '' }
         : { text: '样本远离所有作者样本，更难被归为任何一位。', cls: 'good' }
@@ -127,7 +141,7 @@ export const Ch4Mod1: React.FC<WidgetProps> = () => {
         style={{ cursor: 'grab', touchAction: 'none' }}
       />
       <div className="ctrl">
-        <button className="chip" onClick={() => update(780, 150)}>重置样本</button>
+        <button className="chip" onClick={() => update(HOME.bx, HOME.by)}>重置样本</button>
         <span className="val">最近邻 {nearest} · d = {d.toFixed(2)}</span>
       </div>
       <div className="detail-panel" style={{ marginTop: 12 }}>

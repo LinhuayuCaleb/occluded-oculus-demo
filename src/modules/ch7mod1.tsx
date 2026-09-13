@@ -126,6 +126,9 @@ export const Ch7Mod1: React.FC<WidgetProps> = () => {
             <li key={i}>{COLUMNS[i]}：{v.toFixed(4)}</li>
           ))}
         </ul>
+        <div style={{ marginTop: 10, color: 'var(--paper-ink-muted)' }}>
+          脚注：论文 §1.2 的表述是“四个簇可导出十五种场景，其中第一种是对照组”；但表 1 / 表 2 实际列出的是 15 种非空对抗组合、并未包含对照组行。本教程按表格口径表述为“15 种非空组合，另以未改写原文为对照”。
+        </div>
       </div>
       <div className={'feedback ' + fb.cls}>{fb.text}</div>
     </div>

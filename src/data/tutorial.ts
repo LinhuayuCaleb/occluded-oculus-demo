@@ -110,7 +110,7 @@ export const tutorial: TutorialData = {
           kind: 'module',
           id: '3.1',
           title: '原样 vs 改写：谁会被认出',
-          desc: '按下开始，三态依次推进：原样 → 非注入改写 → 注入改写，看归属判定究竟在哪一步翻转。',
+          desc: '用“下一步”依次推进三态：原样公开 → 非注入改写 → 注入改写，看归属判定究竟在哪一步翻转；“上一步 / 重置”可回退到起点。',
           componentId: 'ch3mod1',
         },
         {
@@ -247,7 +247,7 @@ export const tutorial: TutorialData = {
       insight: '消融实验的核心是逐一移除组件，看攻击力剩下多少。',
       takeaways: [
         { icon: '🎯', title: '三人语料消融', desc: 'Gilmore / Hughes / May。' },
-        { icon: '🔧', title: '15 种非空组合', desc: '四模块的全部非空组合，另以未改写原文为对照。' },
+        { icon: '🔧', title: '15 种非空组合', desc: '四模块的全部非空组合，另以未改写原文为对照（口径说明见 7.1 脚注）。' },
         { icon: '✨', title: '注入样本距离最高', desc: '全文实验中 IN+T 达到 4.20–4.66，为全场最高。' },
       ],
     },

@@ -84,7 +84,7 @@ export const Ch6Mod1: React.FC<WidgetProps> = () => {
       <div className="ctrl">
         <button className="chip" onClick={() => { setAuto(false); go(0); }}>重置</button>
         <button className="chip" onClick={() => { setAuto(false); go(step - 1); }} disabled={step === 0}>上一步</button>
-        <button className="chip selected" onClick={() => { setAuto(false); go(step + 1); }} disabled={step === STEPS.length - 1}>下一步</button>
+        <button className="chip" onClick={() => { setAuto(false); go(step + 1); }} disabled={step === STEPS.length - 1}>下一步</button>
         <button className={'chip' + (auto ? ' selected' : '')} onClick={() => setAuto(!auto)}>{auto ? '暂停' : '自动播放'}</button>
         <span className="val">{step + 1} / {STEPS.length}</span>
       </div>

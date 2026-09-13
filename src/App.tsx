@@ -16,6 +16,21 @@ export default function App() {
   const hasBili = bili.length > 0;
   const lastSlide = total + (hasBili ? 1 : 0); // 0=hero, 1..total=chapters, total+1=bili
 
+  // The cover keywords are shortcuts into the chapter that teaches each term.
+  // Targets are resolved by chapter title so reordering chapters cannot break them.
+  const KEYWORD_CHAPTER: Record<string, string> = {
+    对抗性文体计量: '把字迹变成特征',
+    作者归属: '被认出的笔迹',
+    零宽字符: '注入的三个分身',
+    同形字: '注入的三个分身',
+    TraceTarnish: '结果与边界',
+  };
+  const keywordTargets: Record<string, number> = {};
+  Object.entries(KEYWORD_CHAPTER).forEach(([kw, chapTitle]) => {
+    const i = chapters.findIndex((c) => c.title.includes(chapTitle));
+    if (i >= 0) keywordTargets[kw] = i + 1;
+  });
+
   const [active, setActive] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -101,7 +116,12 @@ export default function App() {
       <main className="slide-main">
         <div className="slide-content" key={active}>
           {active === 0 ? (
-            <Hero meta={tutorial.meta} hero={tutorial.hero} />
+            <Hero
+              meta={tutorial.meta}
+              hero={tutorial.hero}
+              keywordTargets={keywordTargets}
+              onNavigate={goTo}
+            />
           ) : currentChapter ? (
             <section className="chap slide-chap">
               <h2 className="chap-title">

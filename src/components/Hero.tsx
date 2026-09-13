@@ -7,9 +7,13 @@ import { widgetRegistry } from '../modules/registry';
 export function Hero({
   meta,
   hero,
+  keywordTargets,
+  onNavigate,
 }: {
   meta: Meta;
   hero: HeroConfig;
+  keywordTargets?: Record<string, number>;
+  onNavigate?: (idx: number) => void;
 }) {
   const OldWidget = hero.oldMethod.componentId ? widgetRegistry[hero.oldMethod.componentId] : undefined;
   const NewWidget = hero.newMethod.componentId ? widgetRegistry[hero.newMethod.componentId] : undefined;
@@ -24,11 +28,27 @@ export function Hero({
         </div>
         <p className="hero-abs" dangerouslySetInnerHTML={{ __html: meta.coreInsight }} />
         <div className="hero-meta">
-          {(meta.keywords || []).map((k, i) => (
-            <span key={i} className="tag">
-              {k}
-            </span>
-          ))}
+          {(meta.keywords || []).map((k, i) => {
+            const target = keywordTargets ? keywordTargets[k] : undefined;
+            if (target !== undefined && onNavigate) {
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  className="tag tag-link"
+                  onClick={() => onNavigate(target)}
+                  title={`前往 §${target} 查看「${k}」`}
+                >
+                  {k}
+                </button>
+              );
+            }
+            return (
+              <span key={i} className="tag">
+                {k}
+              </span>
+            );
+          })}
         </div>
 
         <div className="hero-compare">

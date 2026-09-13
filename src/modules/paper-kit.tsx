@@ -76,11 +76,63 @@ export function drawStamp(ctx: CanvasRenderingContext2D, x: number, y: number, r
   ctx.beginPath();
   ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.fill();
+  if (!label) return;
+  const family = '"PingFang SC", sans-serif';
+  const maxW = r * 1.6;
+  let size = r * 0.9;
+  ctx.font = 'bold ' + size + 'px ' + family;
+  const w = ctx.measureText(label).width;
+  if (w > maxW) {
+    size = Math.max(7, size * (maxW / w));
+    ctx.font = 'bold ' + size + 'px ' + family;
+  }
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold ' + Math.round(r * 0.9) + 'px "PingFang SC", sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(label, x, y + 1);
+  ctx.textAlign = 'start';
+  ctx.textBaseline = 'alphabetic';
+}
+
+// A verdict badge grows with its own text, so a longer Simplified-Chinese label
+// can never spill white glyphs onto the light canvas background. The round stamp
+// above is only legible while the label still fits inside the circle.
+export function drawVerdictBadge(
+  ctx: CanvasRenderingContext2D,
+  right: number,
+  y: number,
+  color: string,
+  label: string,
+  size: number = 22,
+  padX: number = 16,
+  padY: number = 9
+): void {
+  const family = '"PingFang SC", sans-serif';
+  ctx.font = 'bold ' + size + 'px ' + family;
+  const w = ctx.measureText(label).width + padX * 2;
+  const h = size + padY * 2;
+  const r = h / 2;
+  const left = right - w;
+  const top = y - h / 2;
+  const bottom = y + h / 2;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(left + r, top);
+  ctx.lineTo(right - r, top);
+  ctx.quadraticCurveTo(right, top, right, top + r);
+  ctx.lineTo(right, bottom - r);
+  ctx.quadraticCurveTo(right, bottom, right - r, bottom);
+  ctx.lineTo(left + r, bottom);
+  ctx.quadraticCurveTo(left, bottom, left, bottom - r);
+  ctx.lineTo(left, top + r);
+  ctx.quadraticCurveTo(left, top, left + r, top);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold ' + size + 'px ' + family;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(label, left + w / 2, y + 1);
   ctx.textAlign = 'start';
   ctx.textBaseline = 'alphabetic';
 }

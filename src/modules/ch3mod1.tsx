@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { setupCanvas, observeCanvas } from '../lib/canvasKit';
-import { COLORS, clearScene, drawPaperSheet, drawStamp } from './paper-kit';
+import { COLORS, clearScene, drawPaperSheet, drawVerdictBadge } from './paper-kit';
 import type { WidgetProps } from './registry';
 
 const W = 1080;
@@ -64,7 +64,7 @@ export const Ch3Mod1: React.FC<WidgetProps> = () => {
         ctx.fillStyle = isActive ? COLORS.ink : COLORS.muted;
         ctx.font = '24px "PingFang SC", sans-serif';
         ctx.fillText(String(i + 1), 62, y + 40);
-        if (i <= active) drawStamp(ctx, 890, y + 31, 30, STEPS[i].color, STEPS[i].verdict);
+        if (i <= active) drawVerdictBadge(ctx, 1030, y + 31, STEPS[i].color, STEPS[i].verdict, 22);
       }
     };
 
@@ -91,7 +91,7 @@ export const Ch3Mod1: React.FC<WidgetProps> = () => {
       <div className="ctrl">
         <button className="chip" onClick={() => go(0)}>重置</button>
         <button className="chip" onClick={() => go(step - 1)} disabled={step === 0}>上一步</button>
-        <button className="chip selected" onClick={() => go(step + 1)} disabled={step === STEPS.length - 1}>下一步</button>
+        <button className="chip" onClick={() => go(step + 1)} disabled={step === STEPS.length - 1}>下一步</button>
         <span className="val">{step + 1} / {STEPS.length}</span>
       </div>
       <div className={'feedback ' + fb.cls}>{fb.text}</div>
