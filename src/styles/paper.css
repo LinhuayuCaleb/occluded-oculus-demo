@@ -1,0 +1,144 @@
+/* Paper-specific overrides. This is the ONLY stylesheet the generator edits.
+   Keep the semantic color roles from tokens.css stable (see contract.md §5):
+   --blue = guidance/current, --green = success/paper method, --red = failure/old,
+   --orange = emphasis, --purple = auxiliary. Only append metaphor scene colors
+   or tune scene backgrounds here. Do NOT rewrite tokens.css / components.css. */
+
+:root {
+  --paper-scene-bg: #f5f8f0;
+  --paper-ink: #21324a;
+  --paper-ink-muted: #68778f;
+  --paper-line: #d7deea;
+  --paper-route: #92400e;
+  --paper-blue: #27446e;
+  --paper-green: #228d5c;
+  --paper-red: #c43f52;
+  --paper-orange: #f07e47;
+  --paper-purple: #7c3aed;
+}
+
+/* Optional scene polish. These overrides only adjust presentation of the
+   generator-owned scenes and the shared shell; they do not redefine color roles. */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(240, 126, 71, 0.08), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(39, 68, 110, 0.08), transparent 55%),
+    var(--ui-bg-page);
+}
+
+.module,
+.analogy-card,
+.detail-panel {
+  box-shadow: var(--ui-shadow-soft);
+}
+
+.module {
+  border-top: 3px solid var(--paper-blue);
+  transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
+}
+
+.module:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ui-shadow-hover);
+}
+
+.analogy-visual canvas,
+.hero canvas,
+.module canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  background: var(--paper-scene-bg);
+}
+
+.ctrl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.chip {
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+  padding: 7px 13px;
+  font-weight: 700;
+  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out), background var(--t-fast) var(--ease-out);
+  will-change: transform;
+}
+
+.chip:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
+}
+
+.chip:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.feedback {
+  min-height: 1.6em;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  border-left: 4px solid var(--ui-border-strong);
+  background: var(--ui-bg-muted);
+  color: var(--ui-text-main);
+}
+
+.feedback.good {
+  border-left-color: var(--ui-success);
+  background: var(--green-soft);
+}
+
+.feedback.bad {
+  border-left-color: var(--ui-danger);
+  background: var(--red-soft);
+}
+
+.detail-panel {
+  padding: 16px 18px;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius-md);
+  background: var(--ui-bg-card);
+}
+
+.detail-panel ul {
+  color: var(--ui-text-main);
+}
+
+.hero-compare {
+  gap: 16px;
+}
+
+.bg-side {
+  border-radius: var(--radius-lg);
+  transition: transform var(--t-med) var(--ease-out);
+}
+
+.bg-side:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+  .ctrl.chips {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .chip {
+    width: 100%;
+  }
+
+  .module canvas,
+  .analogy-visual canvas,
+  .hero canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
